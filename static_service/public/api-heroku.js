@@ -28,7 +28,7 @@ var api_connection = {
 	},
 	initialize: function() {	
 		this.datAxios = axios.create({
-		  baseURL: 'http://localhost:3001/notes'
+		  baseURL: 'https://polar-chamber-20771.herokuapp.com/notes'
 		});
 	}
 };
