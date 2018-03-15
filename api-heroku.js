@@ -32,11 +32,3 @@ var api_connection = {
 		});
 	}
 };
-
-
-
-
-
-
-
-
