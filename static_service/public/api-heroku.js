@@ -28,7 +28,7 @@ var api_connection = {
 	},
 	initialize: function() {	
 		this.datAxios = axios.create({
-		  baseURL: 'https://glacial-stream-51472.herokuapp.com/notes'
+		  baseURL: 'https://polar-chamber-20771.herokuapp.com/'
 		});
 	}
 };

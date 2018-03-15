@@ -15,11 +15,11 @@ let cors = require('cors');
 // for accepting traffic from gh-pages while hosted on heroku
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, './public/')));
+
 
 const restful_notes = require('./restful_notes_service');
 app.use("/notes", restful_notes);
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
