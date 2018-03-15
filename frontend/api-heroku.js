@@ -28,7 +28,7 @@ var api_connection = {
 	},
 	initialize: function() {	
 		this.datAxios = axios.create({
-		  baseURL: 'http://localhost:3001/notes'
+		  baseURL: 'https://glacial-stream-51472.herokuapp.com/notes'
 		});
 	}
 };
