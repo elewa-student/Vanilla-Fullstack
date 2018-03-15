@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
 const path = require('path');
+const morgan = require('morgan');
 
 // Body parser for forms
 let bodyParser= require('body-parser')
@@ -9,22 +10,20 @@ let bodyParser= require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-let cors = require('cors');
+app.use(morgan('tiny'));
 
-// cross origin resource sharing
-// for accepting traffic from gh-pages while hosted on heroku
-app.use(cors());
+const static_service = require('./static_service');
+app.use("/", static_service);
 
-app.use(express.static(path.join(__dirname, './public/')));
-
-
+const cors = require('cors');
 const restful_notes = require('./restful_notes_service');
-app.use("/notes", restful_notes);
+app.use("/notes", cors(), restful_notes);
 
-app.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname + '/index.html'));
-})
 
-app.listen(port, function() {
-    console.log("litening in port 3001")
+app.listen(port, function(err) {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log("listening in port 3001");
+	};
 })

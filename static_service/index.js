@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-router.use(express.static(path.join(__dirname, './public/')));
+const path = require('path');
 
-router.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname + '/index.html'));
-})
+router.use(express.static(__dirname + '/public'));
+
+// router.get("/", function(req, res) {
+// 	res.sendFile(path.join(__dirname + '/index.html'));
+// })
 
 module.exports = router;
+

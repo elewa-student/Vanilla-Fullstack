@@ -56,18 +56,4 @@ let model = {
 
 module.exports = model;
 
-// example tests
-// model.reinitialize();
-// model.create("a");
-// model.create("b");
-// model.create("c");
-// console.log(model.read_all());
-// console.log(model.read_one(1));
-// model.update(1, "o");
-// console.log(model.read_all());
-// model.remove(1);
-// console.log(model.read_all());
-// model.reinitialize();
-// console.log(model.read_all());
-
 

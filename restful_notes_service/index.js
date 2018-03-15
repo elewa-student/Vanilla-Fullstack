@@ -4,6 +4,8 @@
 const express = require("express");
 const router = express.Router();
 
+const notes_service = require('./json-async-model');
+// const notes_service = require('./json-sync-model');
 
 // routes =>
 
@@ -45,12 +47,20 @@ router.get("/", function(req, res) {
 
 router.get("/all", function(req, res){
     console.log("-- GET /all --");
-    res.json(notes_service.read_all());
+    notes_service.read_all(function(obj) {
+        res.json(obj);
+    })
 })
+
 router.post("/reset", function(req, res){
     console.log("-- GET /reset --");
-    notes_service.reset();
-    res.redirect("/all");
+    notes_service.reset(function(err) {
+        if (err) {
+            res.json(err);
+        }  else {
+            res.json({"reset": "successful" });
+        };
+    });
 })
 
 router.get("/add", function(req, res){
@@ -61,42 +71,69 @@ router.get("/add", function(req, res){
 router.post("/add", function(req, res){
     console.log("-- POST /add --");
     let new_note = req.body.note;
-    let id = notes_service.create(new_note);
-    res.redirect("/" + id)
+    let id = notes_service.create(new_note, function(err, ID, note) {
+        if (err) {
+            res.json(err)
+        } else {
+            let message = {"add":"successful"};
+            message[ID] = note;
+            res.json(message);
+        }
+    });
 })
 
 router.get("/:id", function(req, res){
     console.log("-- GET /:id --");
     let note_id = req.params.id
-    res.json(notes_service.read_one(note_id));
+    notes_service.read_one(note_id, function(obj) {
+        res.json(obj);
+    });
 })
 
 router.get("/:id/update", function(req, res){
     console.log("-- GET /:id/update --");
     let note_id = req.params.id
     let response = {}
-    response[note_id] = notes_service.read_one(note_id);
-    response.next_step = 'post with a \'note\' property in the body';
-    res.json(response);
+    notes_service.read_one(note_id, function(note) {
+        response.note = note
+        response.next_step = 'post with a \'note\' property in the body';
+        res.json(response);
+    });
 })
 
 router.post("/:id/update", function(req, res){
     console.log("-- POST /:id/update --");
     let note_id = req.params.id
-    notes_service.update(note_id, req.body.note)
-    res.redirect("/" + note_id)
+    notes_service.update(note_id, req.body.note, function(err, ID, note) {
+        if (err) {
+            res.json(err)
+        } else {
+            let message = {"update": "successful"};
+            message[ID] = note;
+            res.json(message);
+        };
+    })
 })
 
 router.get("/:id/delete", function(req, res){
     console.log("-- GET /:id/delete --");
-    let note = notes_service.read_one(req.params.id);
-    res.json({id: note, message: 'confirm deleting this note'});
+    let note = notes_service.read_one(req.params.id, function(note) {
+        res.json({id: note, message: 'confirm deleting this note'});
+    });
 })
 
 router.post("/:id/delete", function(req, res){
     console.log("-- POST /:id/delete --");
-    notes_service.remove(req.params.id);
-    res.redirect("/all")
+    let note_id = req.params.id
+    notes_service.remove(note_id, function(err, ID, note) {
+        if (err) {
+            res.json(err)
+        } else {
+            let message = {"delete": "successful"};
+            message[ID] = note;
+            res.json(message);
+        };
+    })
 })
 
 
