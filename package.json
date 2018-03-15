@@ -2,9 +2,9 @@
   "name": "crud-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./backend/app.js",
   "scripts": {
-    "start": "index.js"
+    "start": "./backend/app.js"
   }, 
   "engines": {
     "node": "8.9.1"
