@@ -5,6 +5,8 @@
 var express = require("express")
 var app = express()
 
+let port = process.env.PORT || 3001;
+
 var notes_service = require('./json-sync-model');
 
 // Body parser for forms
@@ -114,8 +116,7 @@ app.post("/notes/:id/delete", function(req, res){
 })
 
 
-
-app.listen(3001 || process.env.PORT, function() {
+app.listen(port, function() {
     console.log("litening in port 3001")
 })
 
